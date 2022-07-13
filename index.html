@@ -46,7 +46,7 @@
             bottom: 2rem;
         }
 
-        #clock {
+        #time {
             position: absolute;
             color: white;
             width: 100%;
@@ -76,7 +76,7 @@
 </head>
 
 <body>
-    <div id="clock">
+    <div id="time">
 
     </div>
     <div id="top-line"></div>
@@ -94,7 +94,7 @@
         }, 10);
     </script>
     <script type="text/babel">
-        const root = ReactDOM.createRoot(document.getElementById('clock'));
+        const root = ReactDOM.createRoot(document.getElementById('time'));
 
         function Clock(props) {
             return (
