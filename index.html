@@ -49,21 +49,20 @@
 
         #id {
             top: 2.5%;
-            right: 2.5%;
+            right: 5%;
             margin: 1rem;
             position: absolute;
             color: white;
             font-size: xx-large;
-            text-decoration: underline;
             font-weight: 100;
         }
+
     </style>
 </head>
 
 <body>
     <div id="top-line"></div>
-    <div id="id">
-        리듬로거
+    <div id="content">
     </div>
 
     <div id="t">
@@ -75,8 +74,7 @@
             var text = document.getElementById('t');
             text.style = `transform:rotate(${idx++}deg)`;
             idx = idx % 360;
-            
-        }, 10)
+        }, 10);
     </script>
 </body>
 
