@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Loading</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            background-size: cover;
+            background-image: url('loading.jpg');
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+
+        #text {
+            font-size:xx-large;
+            position: absolute;
+            right: 2rem;
+            color: white;
+            bottom: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="text">
+
+    </div>
+    <script>
+        var idx = 0;
+        var list = ["Loading .  ", "Loading .. ", "Loading ..."];
+        setInterval(function () {
+            var text = document.getElementById('text');
+            text.innerHTML = list[(idx++) % 3];
+        }, 1000)
+    </script>
+</body>
+
+</html>
