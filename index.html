@@ -9,6 +9,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Gugi&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/react/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom/umd/react-dom.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js"></script>
     <style>
         * {
             margin: 0;
@@ -39,6 +46,15 @@
             bottom: 2rem;
         }
 
+        #clock {
+            position: absolute;
+            color: white;
+            width: 100%;
+            text-align: center;
+            top: 4rem;
+            font-size: 3rem;
+        }
+
         #top-line {
             width: calc(95%);
             top: 2.5%;
@@ -56,15 +72,16 @@
             font-size: xx-large;
             font-weight: 100;
         }
-
     </style>
 </head>
 
 <body>
+    <div id="clock">
+
+    </div>
     <div id="top-line"></div>
     <div id="content">
     </div>
-
     <div id="t">
         ㅡ
     </div>
@@ -75,6 +92,24 @@
             text.style = `transform:rotate(${idx++}deg)`;
             idx = idx % 360;
         }, 10);
+    </script>
+    <script type="text/babel">
+        const root = ReactDOM.createRoot(document.getElementById('clock'));
+
+        function Clock(props) {
+            return (
+                <div>
+                    <h2>{props.date.toLocaleTimeString()}.</h2>
+                </div>
+            );
+        }
+
+        function tick() {
+            root.render(<Clock date={new Date()} />);
+        }
+
+        setInterval(tick, 1000);
+
     </script>
 </body>
 
