@@ -87,7 +87,7 @@
             top: 0;
             right: 0;
             color: white;
-            width: 50%;
+            width: 15%;
             height: 100%;
             position: absolute;
         }
@@ -112,6 +112,14 @@
             padding: 0;
             background-color: white;
         }
+
+        #t {
+            position: absolute;
+            left: 1rem;
+            bottom: 2.8rem;
+            color: black;
+            z-index: 2;
+        }
     </style>
 </head>
 
@@ -119,7 +127,9 @@
     <div id="playlist">
         playlist
     </div>
-
+    <div id="t">
+        ㅡ
+    </div>
     <div id="info"></div>
     <audio id="audio" src="" controls autoplay onended="next()">
 
@@ -133,6 +143,8 @@
 
     </canvas>
     <script>
+        var isPlay = false;
+        var tIndex = 0;
         var current = null;
         const WIDTH = 1000;
         const HEIGHT = 50;
@@ -140,6 +152,12 @@
         var canvasCtx = canvas.getContext('2d');
         var context = new AudioContext();
         var audio = document.getElementById('audio');
+        audio.onplay = function () {
+            isPlay = true;
+        }
+        audio.onpause = function () {
+            isPlay = false;
+        }
         var source = context.createMediaElementSource(audio);
         var analyser = context.createAnalyser();
         source.connect(analyser);
@@ -225,6 +243,17 @@
 
         random();
     </script>
+    <script>
+        setInterval(function (e) {
+            var t = document.getElementById('t');
+            t.style = `transform:rotate(${tIndex}deg)`;
+            tIndex = tIndex % 360;
+            if ( isPlay){
+                tIndex++;
+            }
+        }, 10)
+    </script>
+
 
 </body>
 
