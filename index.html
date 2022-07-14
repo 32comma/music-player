@@ -1,26 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Loading</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Gugi&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
-    <script src="https://unpkg.com/react/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom/umd/react-dom.development.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js"></script>
     <style>
         * {
             margin: 0;
             padding: 0;
-            font-family: 'Gugi', cursive;
         }
 
         html,
@@ -30,247 +19,52 @@
             overflow: hidden;
         }
 
-        body {
-            position: relative;
-        }
-
-        #t {
-            font-size: 1rem;
-            position: absolute;
-            right: 2rem;
-            color: white;
-            bottom: 2rem;
-        }
-
-        #time {
-            position: absolute;
-            color: white;
-            width: 100%;
-            height: 1rem;
-            text-align: right;
-            top: 0rem;
-            font-size: 0.5rem;
-            background-color: black;
-        }
-
-
-        #id {
-            top: 2.5%;
-            right: 5%;
-            margin: 1rem;
-            position: absolute;
-            color: white;
-            font-size: xx-large;
-            font-weight: 100;
-        }
-
         #audio-container {
-            width: 100%;
-            position: absolute;
-            top: 2rem;
-            left: 0;
-        }
-
-        #canvas {
-            background-color: black;
-        }
-
-        #audio {
-            width: 100%;
-            height: 2rem;
-            position: relative;
-            z-index: 1;
-            opacity: 0.8;
             background-color: white;
-            filter: invert(1);
-        }
-
-        audio::-webkit-media-controls-panel {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            left: 0;
-            top: 0;
-            background-color: white;
-        }
-
-        #canvas {
-            top: 1rem;
-            left: 0;
-            width: 100%;
-            height: 1rem;
-            z-index: 0;
-            opacity: 1;
-            position: absolute;
-        }
-
-        #playlist {
-            position: absolute;
-            top: 4rem;
-            left: 0;
-            width: 100%;
-            background-color: black;
-            color: white;
-        }
-
-        table,
-        tr,
-        td {
-            border-collapse: collapse;
-        }
-
-        table,
-        tr {
-            width: 100%;
-        }
-
-        #controller {
-            top: 0;
-            left: 0;
-            background-color: black;
-            color: white;
-            position: absolute;
-        }
-
-        .next:hover,
-        .prev:hover {
-            color: chartreuse;
+            color: black;
+            border: 1px solid black;
+            margin: 1rem;
         }
     </style>
-    <script>
-        var list = ['study.wav', 'why.wav', 'wave.wav'];
-        var idx = 0;
-        function next() {
-            initTrElements();
-            
-            idx = (idx++) % list.length;
-            console.log(list[idx])
-            var audio = document.getElementById('audio');
-            audio.pause();
-            audio.src = list[idx];
-            document.getElementById(list[idx]).style = 'background-color:white;color:black;';
-            audio.play();
-        }
-        function initTrElements() {
-            var trElements = document.getElementsByTagName('tr');
-            for (var i = 0; i < trElements.length; i++) {
-                trElements[i].style = 'background-color:black;color:white;';
-            }
-        }
-        function prev() {
-            initTrElements();
-            idx = (idx--) % list.length;
-            console.log(list[idx])
-            var audio = document.getElementById('audio');
-            audio.pause();
-            audio.src = list[idx];
-            audio.play();
-        }
-        function change(v, obj) {
-            console.log(v);
-            initTrElements();
-            var audio = document.getElementById('audio');
-            obj.style = 'background-color:white;color:black;';
-            audio.pause();
-            audio.src = list[v];
-            audio.play();
-        }
-    </script>
 </head>
 
 <body>
-    <div id="time">
-    </div>
     <div id="audio-container">
-        <audio id="audio" src="study.wav" onended="next()" controls autoplay></audio>
-    </div>
-    <div id="t">
-        ㅡ
-    </div>
-    <canvas id="canvas" width="2000" height="250">
-    </canvas>
-    <div id="controller">
-        <span class='prev' onclick="prev()">◁</span>
-        <span class='next' onclick="next()">▷</span>
-    </div>
-    <div id="playlist">
-        <table>
-            <tr id="study.wav" onclick="change(0, this)">
-
-                <td>&nbsp;study</td>
-            </tr>
-            <tr id="why.wav" onclick="change(1, this)">
-
-                <td>&nbsp;why</td>
-            </tr>
-            <tr id="wave.wav" onclick="change(2, this)">
-
-                <td>&nbsp;wave</td>
-            </tr>
-        </table>
+        <audio id="audio" src="" controls autoplay onended="next()"></audio>
+        <div id="name"></div>
+        <button onclick="prev()">&lt;&lt;</button>
+        <button onclick="next()">&gt;&gt;</button>
     </div>
     <script>
+        var list = [
+            'study.wav', 'wave.wav', 'why.wav'
+        ];
         var idx = 0;
-        setInterval(function () {
-            var text = document.getElementById('t');
-            text.style = `transform:rotate(${idx++}deg)`;
-            idx = idx % 360;
-        }, 10);
-    </script>
-    <script>
-        const WIDTH = 2000;
-        const HEIGHT = 250;
-        var canvas = document.getElementById('canvas');
-        var canvasCtx = canvas.getContext('2d');
-        var context = new AudioContext();
-        var audio = document.getElementById('audio');
-        var source = context.createMediaElementSource(audio);
-        var analyser = context.createAnalyser();
-        source.connect(analyser);
-        source.connect(context.destination);
-        analyser.fftSize = 4096;
-        var bufferLength = analyser.frequencyBinCount;
-        var dataArray = new Uint8Array(bufferLength);
-        analyser.getByteTimeDomainData(dataArray);
-        function draw() {
-            drawVisual = requestAnimationFrame(draw);
-
-            analyser.getByteFrequencyData(dataArray);
-
-            canvasCtx.fillStyle = 'rgb(0, 0, 0)';
-            canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
-            var barWidth = (WIDTH / bufferLength) * 2.5;
-            var barHeight;
-            var x = 0;
-            for (var i = 0; i < bufferLength; i++) {
-                barHeight = dataArray[i] / 2;
-
-                canvasCtx.fillStyle = 'rgb(' + (barHeight + 100) + ',50,50)';
-                canvasCtx.fillRect(x, HEIGHT - barHeight / 2, barWidth, barHeight);
-
-                x += barWidth + 1;
+        function setAudio(v) {
+            var audio = document.getElementById('audio');;
+            var name = document.getElementById('name');
+            name.innerHTML = v;
+            audio.src = list[idx];
+        }
+        function next() {
+            idx++;
+            if (idx >= list.length) {
+                idx = 0;
             }
-        };
-        draw();
-    </script>
-    <script type="text/babel">
-        const root = ReactDOM.createRoot(document.getElementById('time'));
-
-        function Clock(props) {
-            return (
-                <div>
-                    <h2>{props.date.toLocaleTimeString()}.</h2>
-                </div>
-            );
+            console.log(idx);
+            setAudio(list[idx]);
         }
-
-        function tick() {
-            root.render(<Clock date={new Date()} />);
+        function prev() {
+            idx--;
+            if (idx < 0) {
+                idx = list.length - 1;
+            }
+            console.log(idx);
+            setAudio(list[idx]);
         }
-
-        setInterval(tick, 1000);
-        change(0, document.getElementById('study.wav'));
+        setAudio(list[idx]);
     </script>
+
 </body>
 
 </html>
