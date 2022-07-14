@@ -5,11 +5,15 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>music-player</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gugi&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
+            font-family: 'Gugi', cursive;
         }
 
         html,
@@ -21,26 +25,115 @@
 
         #audio-container {
             color: white;
-            margin: 1rem;
+            bottom: 0;
         }
 
         #canvas {
             position: absolute;
             left: 0;
-            top: 8rem;
+            bottom: 4rem;
+        }
+
+        audio::-webkit-media-controls-panel {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background-color: white;
+        }
+
+        #audio {
+            background-color: white;
+            width: 90%;
+            position: absolute;
+            bottom: 0;
+            height: 3rem;
+        }
+
+        .next {
+            position: absolute;
+            bottom: 0;
+            width: 2.5%;
+            right: 5%;
+            height: 3rem;
+        }
+
+        .toggle {
+            position: absolute;
+            bottom: 0;
+            width: 2.5%;
+            right: 0;
+            height: 3rem;
+        }
+
+        .prev {
+            position: absolute;
+            bottom: 0;
+            width: 2.5%;
+            right: 7.5%;
+            height: 3rem;
+        }
+
+        .random {
+            position: absolute;
+            bottom: 0;
+            width: 2.5%;
+            right: 2.5%;
+            height: 3rem;
+        }
+
+        #playlist {
+            top: 0;
+            right: 0;
+            color: white;
+            width: 50%;
+            height: 100%;
+            position: absolute;
+        }
+
+        #info {
+            bottom: 3rem;
+            left: 0;
+            text-align: left;
+            padding-left: 2rem;
+            position: absolute;
+            display: block;
+            z-index: 1;
+            background-color: white;
+            color: black;
+            width: 100%;
+            height: 1rem;
+        }
+
+        button {
+            border: 0;
+            margin: 0;
+            padding: 0;
+            background-color: white;
         }
     </style>
 </head>
 
 <body>
-    <div id="audio-container">
-        <audio id="audio" src="" controls autoplay onended="next()"></audio>
-        <div id="name"></div>
-        <button onclick="prev()">&lt;&lt;</button>
-        <button onclick="next()">&gt;&gt;</button>
-        <canvas id="canvas" width="1000" height="50">
+    <div id="playlist">
+        playlist
     </div>
+
+    <div id="info"></div>
+    <audio id="audio" src="" controls autoplay onended="next()">
+
+    </audio>
+
+    <button class='prev' onclick="prev()">&lt;&lt;</button>
+    <button class='next' onclick="next()">&gt;&gt;</button>
+    <button class='random' onclick="random()">~</button>
+    <button class='toggle' onclick="toggle()">∞</button>
+    <canvas id="canvas" width="1000" height="50">
+
+    </canvas>
     <script>
+        var current = null;
         const WIDTH = 1000;
         const HEIGHT = 50;
         var canvas = document.getElementById('canvas');
@@ -66,7 +159,7 @@
             var x = 0;
             for (var i = 0; i < bufferLength; i++) {
                 barHeight = dataArray[i] / 2;
-                canvasCtx.fillStyle = 'rgba(255,0,0,1)';
+                canvasCtx.fillStyle = 'rgba(255,255,255,1)';
                 canvasCtx.fillRect(x, HEIGHT - barHeight / 2, barWidth, barHeight);
                 x += barWidth + 1;
             }
@@ -78,14 +171,24 @@
     </script>
     <script>
         var list = [
-            'study.wav', 'wave.wav', 'why.wav'
+            'star.mp3', 'test.mp3', 'dream_line.mp3', 'question_mark.mp3'
         ];
         var idx = 0;
         function setAudio(v) {
             var audio = document.getElementById('audio');;
-            var name = document.getElementById('name');
-            name.innerHTML = v;
-            audio.src = list[idx];
+            var info = document.getElementById('info');
+            info.innerHTML = v;
+            audio.src = 'mp3/' + list[idx];
+            current = list[idx];
+            console.log('current' + list[idx])
+            var mp3s = document.getElementsByClassName('mp3');
+            for (var i = 0; i < mp3s.length; i++) {
+                if (mp3s[i].getAttribute('id') == current) {
+                    mp3s[i].style = 'color:white';
+                } else {
+                    mp3s[i].style = 'color:gray';
+                }
+            }
         }
         function next() {
             idx++;
@@ -93,6 +196,15 @@
                 idx = 0;
             }
             console.log(idx);
+            setAudio(list[idx]);
+        }
+        function random() {
+            var r = parseInt(Math.random() * list.length);
+            if (idx == r) {
+                random()
+            } else {
+                idx = r;
+            }
             setAudio(list[idx]);
         }
         function prev() {
@@ -103,7 +215,15 @@
             console.log(idx);
             setAudio(list[idx]);
         }
-        setAudio(list[idx]);
+    </script>
+    <script>
+        //playlist
+        var playlist = document.getElementById('playlist');
+        for (var i = 0; i < list.length; i++) {
+            playlist.innerHTML += `<div id='${list[i]}' class='mp3' >${list[i]}</div>`;
+        }
+        
+        random();
     </script>
 
 </body>
