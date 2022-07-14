@@ -122,10 +122,23 @@
             color: black;
             z-index: 2;
         }
+
+        #shy {
+            position: absolute;
+            bottom: 4rem;
+            right: 0;
+        }
     </style>
 </head>
 
 <body>
+    <div id="shy">
+        <video src="video/peeking-shy.mp4" id="video" width="100" height="100">
+    </div>
+    <script>
+        var video = document.getElementById('video');
+        video.style = 'opacity:0;';
+    </script>
     <div id="playlist">
         &lt; PLAYLIST &gt;
     </div>
@@ -141,7 +154,7 @@
     <button class='next' onclick="next()">&gt;&gt;</button>
     <button class='random' onclick="random()">~</button>
     <button class='toggle' onclick="toggle()">∞</button>
-    <canvas id="canvas" width="1000" height="50">
+    <canvas id="canvas" width="1000" height="100">
 
     </canvas>
     <script>
@@ -149,7 +162,7 @@
         var tIndex = 0;
         var current = null;
         const WIDTH = 1000;
-        const HEIGHT = 50;
+        const HEIGHT = 100;
         var canvas = document.getElementById('canvas');
         var canvasCtx = canvas.getContext('2d');
         var context = new AudioContext();
@@ -195,6 +208,12 @@
         ];
         var idx = 0;
         function setAudio(v) {
+            var video = document.getElementById('video');
+            video.style = 'opacity : 1';
+            video.play();
+            setTimeout(function () {
+                video.style = 'opacity:0';
+            }, 4000)
             var audio = document.getElementById('audio');;
             var info = document.getElementById('info');
             info.innerHTML = v;
@@ -253,7 +272,7 @@
             if (isPlay) {
                 tIndex++;
             }
-        }, 10)
+        }, 100)
     </script>
 
 
