@@ -178,9 +178,9 @@
             var audio = document.getElementById('audio');;
             var info = document.getElementById('info');
             info.innerHTML = v;
-            audio.src = 'mp3/' + list[idx];
-            current = list[idx];
-            console.log('current' + list[idx])
+            audio.src = 'mp3/' + v;
+            current = v;
+            console.log('current' + v)
             var mp3s = document.getElementsByClassName('mp3');
             for (var i = 0; i < mp3s.length; i++) {
                 if (mp3s[i].getAttribute('id') == current) {
@@ -220,9 +220,9 @@
         //playlist
         var playlist = document.getElementById('playlist');
         for (var i = 0; i < list.length; i++) {
-            playlist.innerHTML += `<div id='${list[i]}' class='mp3' >${list[i]}</div>`;
+            playlist.innerHTML += `<div id='${list[i]}' class='mp3' onclick="setAudio('${list[i]}')">${list[i]}</div>`;
         }
-        
+
         random();
     </script>
 
