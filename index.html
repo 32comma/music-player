@@ -69,12 +69,12 @@
                 canvasCtx.fillStyle = 'rgba(255,0,0,1)';
                 canvasCtx.fillRect(x, HEIGHT - barHeight / 2, barWidth, barHeight);
                 x += barWidth + 1;
-                setTimeout(function(){
-                    canvasCtx.clearRect(0,0,WIDTH,HEIGHT);
-                },100);
             }
         };
         draw();
+        setInterval(function (e) {
+            canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
+        }, 10)
     </script>
     <script>
         var list = [
