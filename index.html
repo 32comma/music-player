@@ -20,6 +20,7 @@
         html,
         body {
             width: 100%;
+            background-color:black;
             height: 100%;
         }
 
@@ -200,7 +201,7 @@
         draw();
         setInterval(function (e) {
             canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
-        }, 10)
+        }, 100)
     </script>
     <script>
         var list = [
@@ -275,7 +276,7 @@
             if (isPlay) {
                 tIndex++;
             }
-        }, 100)
+        }, 50)
     </script>
 
 
