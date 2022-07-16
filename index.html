@@ -20,7 +20,7 @@
         html,
         body {
             width: 100%;
-            background-color:black;
+            background-color: black;
             height: 100%;
         }
 
@@ -147,14 +147,13 @@
         ㅡ
     </div>
     <div id="info"></div>
-    <audio id="audio" src="" controls autoplay onended="next()">
+    <audio id="audio" src="" controls onended="next()">
 
     </audio>
-
     <button class='prev' onclick="prev()">&lt;&lt;</button>
     <button class='next' onclick="next()">&gt;&gt;</button>
     <button class='random' onclick="random()">~</button>
-    <button class='toggle' onclick="toggle()">∞</button>
+    <button id='toggle' class='toggle'>ON</button>
     <canvas id="canvas" width="1000" height="100">
 
     </canvas>
@@ -164,46 +163,6 @@
         var current = null;
         const WIDTH = 1000;
         const HEIGHT = 100;
-        var canvas = document.getElementById('canvas');
-        var canvasCtx = canvas.getContext('2d');
-        var context = new AudioContext();
-        var audio = document.getElementById('audio');
-        audio.onplay = function () {
-            isPlay = true;
-        }
-        audio.onpause = function () {
-            isPlay = false;
-        }
-        var source = context.createMediaElementSource(audio);
-        var analyser = context.createAnalyser();
-        source.connect(analyser);
-        source.connect(context.destination);
-        analyser.fftSize = 4096;
-        var bufferLength = analyser.frequencyBinCount;
-        var dataArray = new Uint8Array(bufferLength);
-        analyser.getByteTimeDomainData(dataArray);
-        function draw() {
-            drawVisual = requestAnimationFrame(draw);
-
-            analyser.getByteFrequencyData(dataArray);
-            canvasCtx.fillStyle = 'rgb(255, 255, 255,0)';
-            canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
-            var barWidth = (WIDTH / bufferLength) * 2.5;
-            var barHeight;
-            var x = 0;
-            for (var i = 0; i < bufferLength; i++) {
-                barHeight = dataArray[i] / 2;
-                canvasCtx.fillStyle = 'rgba(255,255,255,1)';
-                canvasCtx.fillRect(x, HEIGHT - barHeight / 2, barWidth, barHeight);
-                x += barWidth + 1;
-            }
-        };
-        draw();
-        setInterval(function (e) {
-            canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
-        }, 50)
-    </script>
-    <script>
         var list = [
             'practice.mp3', 'airplane.mp3', 'molu.mp3', 'v2.mp3', 'zzz.mp3', '^^.mp3', 'step.mp3', '~_~.mp3', '20220706.mp3', 'dream.mp3', 'train.mp3', 'good.mp3', 'guitar.mp3', 'star.mp3', 'test.mp3', 'dream_line.mp3', 'question_mark.mp3', 'calm.mp3', 'dream_it.mp3', 'slowly.mp3'
         ];
@@ -280,6 +239,49 @@
     </script>
 
 
+    <script>
+        document.getElementById('toggle').addEventListener('click', function (e) {
+            console.log(e);
+            var canvas = document.getElementById('canvas');
+            var canvasCtx = canvas.getContext('2d');
+            var context = new AudioContext();
+            var audio = document.getElementById('audio');
+            audio.onplay = function () {
+                isPlay = true;
+            }
+            audio.onpause = function () {
+                isPlay = false;
+            }
+            var source = context.createMediaElementSource(audio);
+            var analyser = context.createAnalyser();
+            source.connect(analyser);
+            source.connect(context.destination);
+            analyser.fftSize = 4096;
+            var bufferLength = analyser.frequencyBinCount;
+            var dataArray = new Uint8Array(bufferLength);
+            analyser.getByteTimeDomainData(dataArray);
+            function draw() {
+                drawVisual = requestAnimationFrame(draw);
+
+                analyser.getByteFrequencyData(dataArray);
+                canvasCtx.fillStyle = 'rgb(255, 255, 255,0)';
+                canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
+                var barWidth = (WIDTH / bufferLength) * 2.5;
+                var barHeight;
+                var x = 0;
+                for (var i = 0; i < bufferLength; i++) {
+                    barHeight = dataArray[i] / 2;
+                    canvasCtx.fillStyle = 'rgba(255,255,255,1)';
+                    canvasCtx.fillRect(x, HEIGHT - barHeight / 2, barWidth, barHeight);
+                    x += barWidth + 1;
+                }
+            };
+            draw();
+            setInterval(function (e) {
+                canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
+            }, 50)
+        });
+    </script>
 </body>
 
 </html>
