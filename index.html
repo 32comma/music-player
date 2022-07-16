@@ -261,8 +261,11 @@
         for (var i = 0; i < list.length; i++) {
             playlist.innerHTML += `<div id='${list[i]}' class='mp3' onclick="setAudio('${list[i]}')">${list[i]}</div>`;
         }
-
-        random();
+        try {
+            random();
+        } catch (e) {
+            random();
+        }
     </script>
     <script>
         setInterval(function (e) {
