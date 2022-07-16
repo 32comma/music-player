@@ -51,6 +51,7 @@
             bottom: 0;
             height: 3rem;
         }
+
         .next {
             position: absolute;
             bottom: 0;
@@ -145,7 +146,7 @@
     <button class='prev' onclick="prev()">&lt;&lt;</button>
     <button class='next' onclick="next()">&gt;&gt;</button>
     <button class='random' onclick="random()">~</button>
-    <button id='toggle' class='toggle'>ON</button>
+    <button id='toggle' class='toggle' disabled>~</button>
     <canvas id="canvas" width="1000" height="100">
 
     </canvas>
@@ -182,6 +183,7 @@
             }
             console.log(idx);
             setAudio(list[idx]);
+            play();
         }
         function random() {
             var r = parseInt(Math.random() * list.length);
@@ -192,6 +194,10 @@
             }
             setAudio(list[idx]);
         }
+        function play() {
+            var audio = document.getElementById('audio');
+            audio.play();
+        }
         function prev() {
             idx--;
             if (idx < 0) {
@@ -199,6 +205,7 @@
             }
             console.log(idx);
             setAudio(list[idx]);
+            play();
         }
     </script>
     <script>
@@ -207,11 +214,7 @@
         for (var i = 0; i < list.length; i++) {
             playlist.innerHTML += `<div id='${list[i]}' class='mp3' onclick="setAudio('${list[i]}')">${list[i]}</div>`;
         }
-        try {
-            random();
-        } catch (e) {
-            random();
-        }
+        random();
     </script>
     <script>
         setInterval(function (e) {
@@ -226,55 +229,47 @@
 
 
     <script>
-        document.getElementById('toggle').addEventListener('click', function (e) {
-            console.log(e);
-            if (e.target.innerHTML == 'ON') {
-                e.target.innerHTML = 'CLOSE';
-            } else{
-                window.close();
-            }
-            var canvas = document.getElementById('canvas');
-            var canvasCtx = canvas.getContext('2d');
-            var context = new AudioContext();
-            var audio = document.getElementById('audio');
-            audio.onplay = function () {
-                isPlay = true;
-            }
-            audio.onpause = function () {
-                isPlay = false;
-            }
-            var source = context.createMediaElementSource(audio);
-            var analyser = context.createAnalyser();
-            source.connect(analyser);
-            source.connect(context.destination);
-            analyser.fftSize = 4096;
-            var bufferLength = analyser.frequencyBinCount;
-            var dataArray = new Uint8Array(bufferLength);
-            analyser.getByteTimeDomainData(dataArray);
-            function draw() {
-                drawVisual = requestAnimationFrame(draw);
+        var canvas = document.getElementById('canvas');
+        var canvasCtx = canvas.getContext('2d');
+        var context = new AudioContext();
+        var audio = document.getElementById('audio');
+        audio.onplay = function () {
+            isPlay = true;
+        }
+        audio.onpause = function () {
+            isPlay = false;
+        }
+        var source = context.createMediaElementSource(audio);
+        var analyser = context.createAnalyser();
+        source.connect(analyser);
+        source.connect(context.destination);
+        analyser.fftSize = 4096;
+        var bufferLength = analyser.frequencyBinCount;
+        var dataArray = new Uint8Array(bufferLength);
+        analyser.getByteTimeDomainData(dataArray);
+        function draw() {
+            drawVisual = requestAnimationFrame(draw);
 
-                analyser.getByteFrequencyData(dataArray);
-                canvasCtx.fillStyle = 'rgb(255, 255, 255,0)';
-                canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
-                var barWidth = (WIDTH / bufferLength) * 2.5;
-                var barHeight;
-                var x = 0;
-                for (var i = 0; i < bufferLength; i++) {
-                    barHeight = dataArray[i] / 2;
-                    canvasCtx.fillStyle = 'rgba(255,255,255,1)';
-                    canvasCtx.fillRect(x, HEIGHT - barHeight / 2, barWidth, barHeight);
-                    x += barWidth + 1;
-                }
-            };
-            draw();
-            setInterval(function (e) {
-                canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
-            }, 50)
-        });
+            analyser.getByteFrequencyData(dataArray);
+            canvasCtx.fillStyle = 'rgb(255, 255, 255,0)';
+            canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
+            var barWidth = (WIDTH / bufferLength) * 2.5;
+            var barHeight;
+            var x = 0;
+            for (var i = 0; i < bufferLength; i++) {
+                barHeight = dataArray[i] / 2;
+                canvasCtx.fillStyle = 'rgba(255,255,255,1)';
+                canvasCtx.fillRect(x, HEIGHT - barHeight / 2, barWidth, barHeight);
+                x += barWidth + 1;
+            }
+        };
+        draw();
+        setInterval(function (e) {
+            canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
+        }, 50)
     </script>
     <script>
-        
+
     </script>
 </body>
 
